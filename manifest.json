@@ -1,7 +1,7 @@
 {
   "name": "Gmail Sunshine",
-  "description": "Brings the best feature from Inbox to Gmail -- Sunshine when there is no new mail!",
-  "version": "1.3",
+  "description": "Brings the best feature from Inbox to Gmail – Sunshine when there is no new mail!",
+  "version": "1.4",
   "content_scripts": [
     {
       "matches": [
@@ -11,7 +11,7 @@
     }
   ],
   "icons": {
-    "128": "icon.png"
+    "128": "icon128.png"
   },
   "permissions": [
     "https://mail.google.com/"
