@@ -1,3 +1,8 @@
+// Returns a function, that, when invoked, will only be triggered at most once
+// during a given window of time. Normally, the throttled function will run
+// as much as it can, without ever going more than once per `wait` duration;
+// but if you'd like to disable the execution on the leading edge, pass
+// `{leading: false}`. To disable execution on the trailing edge, ditto.
 var throttle = function(func, wait, options) {
   var context, args, result;
   var timeout = null;
@@ -30,23 +35,15 @@ var throttle = function(func, wait, options) {
   };
 };
 
-// Select the node that will be observed for mutations
-var targetNode = document.body; // TODO: this is ugly, but works
-
-// Options for the observer (which mutations to observe)
-var config = { attributes: false, childList: true, subtree: true };
-
-// Callback function to execute when mutations are observed
-var callback = throttle(function(mutationsList, observer) {
+var observer = new MutationObserver(throttle(function(mutationsList, observer) {
   var xpath = "//td[text()[contains(.,'No new mail!')]]";
   var matchingElement = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
   if (matchingElement) {
-    matchingElement.parentNode.parentNode.parentNode.parentNode.innerHTML = '<center><img width="250" src="//ssl.gstatic.com/bt/C3341AA7A1A076756462EE2E5CD71C11/zero/1x/ic_zero_inbox.png" srcset="//ssl.gstatic.com/bt/C3341AA7A1A076756462EE2E5CD71C11/zero/2x/ic_zero_inbox_2x.png 2x"></center>';
+    matchingElement.parentNode.parentNode.parentNode.parentNode.innerHTML = // TODO: do this somehow better?
+      '<center>' +
+      '<img width="250" src="https://ssl.gstatic.com/bt/C3341AA7A1A076756462EE2E5CD71C11/zero/2x/ic_zero_inbox_2x.png" style="user-select:none;" />' +
+      '</center>';
   }
-}, 200);
+}, 200)); // throttle in case the document changes very often
 
-// Create an observer instance linked to the callback function
-var observer = new MutationObserver(callback);
-
-// Start observing the target node for configured mutations
-observer.observe(targetNode, config);
+observer.observe(document.body, { attributes: false, childList: true, subtree: true });
