@@ -1,7 +1,7 @@
 {
   "name": "Gmail Sunshine",
   "description": "Brings the best feature from Inbox to Gmail – Sunshine when there is no new mail!",
-  "version": "1.4",
+  "version": "2.0",
   "content_scripts": [
     {
       "matches": [

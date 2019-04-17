@@ -36,14 +36,27 @@ var throttle = function(func, wait, options) {
 };
 
 var observer = new MutationObserver(throttle(function(mutationsList, observer) {
-  var xpath = "//td[text()[contains(.,'No new mail!')]]";
+  var xpath = "//td[text()[contains(.,'No new ')]]";
   var matchingElement = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
   if (matchingElement) {
-    matchingElement.parentNode.parentNode.parentNode.parentNode.innerHTML = // TODO: do this somehow better?
-      '<center>' +
-      '<img width="250" src="https://ssl.gstatic.com/bt/C3341AA7A1A076756462EE2E5CD71C11/zero/2x/ic_zero_inbox_2x.png" style="user-select:none;" />' +
-      '</center>';
+    matchingElement.parentNode.parentNode.parentNode.innerHTML = '<div class="sunshine"></div>';
   }
 }, 200)); // throttle in case the document changes very often
 
 observer.observe(document.body, { attributes: false, childList: true, subtree: true });
+
+var style = document.createElement('style');
+style.innerHTML = `
+  .sunshine,
+  .DVI7hd .aRs .aRu:before { /* for tabs */
+    content:'';
+    display:block;
+    width:100%;height:300px;
+    background:url('https://ssl.gstatic.com/bt/C3341AA7A1A076756462EE2E5CD71C11/zero/2x/ic_zero_inbox_2x.png');
+    background-size:contain;
+    background-repeat:no-repeat;
+    background-position:center;
+    user-select:none;
+  }
+`;
+document.head.appendChild(style);
